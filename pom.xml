@@ -1,0 +1,191 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <name>Kubescore - parent</name>
+    <groupId>no.hamre.kubescore</groupId>
+    <artifactId>kubescore-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+<!--
+        <activation.version>1.1.1</activation.version>
+        <bonecp.version>0.8.0.RELEASE</bonecp.version>
+        <guava.version>22.0</guava.version>
+        <h2.version>1.4.197</h2.version>
+        <jaxb-api.version>2.3.0</jaxb-api.version>
+        <logback.version>1.2.3</logback.version>
+        <sql2o.version>1.6.0</sql2o.version>
+
+        <dropwizard.version>1.1.6</dropwizard.version>
+        <dropwizard-swagger.version>1.0.0-1</dropwizard-swagger.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jackson.version>2.9.7</jackson.version>
+        <jersey.version>2.23.2</jersey.version>
+        <junit.version>5.3.1</junit.version>
+        <swagger-core.version>1.5.4</swagger-core.version>
+        <slf4j.version>1.7.21</slf4j.version>
+        <liquibase.version>3.6.2</liquibase.version>
+        <liquibase-slf4j.version>1.2.1</liquibase-slf4j.version>
+        <maven-surefire.version>2.22.1</maven-surefire.version>
+        <mockito.version>2.23.0</mockito.version>
+        <constretto.version>2.2.3</constretto.version>
+        <constretto.dropwizard.version>1.1</constretto.dropwizard.version>
+        <postgresql.version>9.4.1209</postgresql.version> -->
+        <kotlin.version>1.3.0</kotlin.version>
+        <java.version>11</java.version>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <modules>
+        <module>frontend</module>
+        <module>backend</module>
+    </modules>
+
+    <dependencyManagement>
+    <!--
+        <dependencies>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-bom</artifactId>
+                <version>${dropwizard.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>2.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sql2o</groupId>
+                <artifactId>sql2o</artifactId>
+                <version>${sql2o.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sql2o.extensions</groupId>
+                <artifactId>sql2o-postgres</artifactId>
+                <version>${sql2o.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-access</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.constretto</groupId>
+                <artifactId>constretto-core</artifactId>
+                <version>${constretto.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.constretto</groupId>
+                <artifactId>constretto-dropwizard</artifactId>
+                <version>${constretto.dropwizard.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mattbertolini</groupId>
+                <artifactId>liquibase-slf4j</artifactId>
+                <version>${liquibase-slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smoketurner</groupId>
+                <artifactId>dropwizard-swagger</artifactId>
+                <version>${dropwizard-swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-reflect</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jolbox</groupId>
+                <artifactId>bonecp</artifactId>
+                <version>${bonecp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${activation.version}</version>
+            </dependency>
+        </dependencies> -->
+    </dependencyManagement>
+<!--
+    <repositories>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <name>OSS Sonatype Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+    </repositories> -->
+</project>

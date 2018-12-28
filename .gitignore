@@ -1,5 +1,6 @@
 .DS_Store
 node_modules/
+frontend/node/
 dist/
 npm-debug.log*
 yarn-debug.log*
@@ -14,6 +15,7 @@ yarn.lock
 *.njsproj
 *.sln
 
+backend/src/main/resources/public/
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
