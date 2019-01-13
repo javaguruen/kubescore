@@ -1,4 +1,4 @@
-package no.hamre.kubescore.application;
+package no.hamre.kubescore.backend;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,39 +1,28 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div>
+    <h1>3x3 scrambles</h1>
+    <div>
+      <b-container fluid>
+        <b-row align-h="center">
+          <b-col cols="3">
+            <b-form-input v-model="numberOfRotations"
+                          type="number"
+                          placeholder="Number of rotations"></b-form-input>
+          </b-col>
+          <b-col cols="1">
+            <b-button size="sm" variant="primary"
+                      @click="callRestService()"
+            >
+              Generate {{numberOfRotations}}
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-container>
+    </div>
 
-    <!--button class=”Search__button” @click="callRestService()">CALL Spring Boot REST backend service</button-->
+    <h3>{{scramble}}</h3>
 
-    <b-btn @click="callRestService()">CALL Spring Boot REST backend service</b-btn>
-
-<h3>{{ response }}</h3>
-
+    {{debug}}
   </div>
 </template>
 
@@ -42,21 +31,27 @@ import axios from 'axios'
 
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
-  },
   data () {
     return {
+      numberOfRotations: 20,
+      scramble: 'not generated',
+      debug: '',
       response: [],
       errors: []
     }
   },
   methods: {
     callRestService () {
-      axios.get(`api/hello`)
+      axios.get('/api/v1/scrambles/3x3',
+        { params: { 'rotations': this.numberOfRotations } })
         .then(response => {
-        // JSON responses are automatically parsed.
+          // JSON responses are automatically parsed.
           this.response = response.data
+          if (response.status === 200) {
+            this.scramble = response.data
+          } else {
+            this.debug = response.status + ' ' + response.data
+          }
         })
         .catch(e => {
           this.errors.push(e)
@@ -68,18 +63,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+  h3 {
+    margin: 40px 0 0;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+  a {
+    color: #42b983;
+  }
 </style>

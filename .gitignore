@@ -1,5 +1,6 @@
 .DS_Store
 node_modules/
+node/
 frontend/node/
 dist/
 npm-debug.log*
@@ -9,11 +10,6 @@ yarn.lock
 
 # Editor directories and files
 .idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
 *.iml
 
 backend/src/main/resources/public/

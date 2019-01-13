@@ -1,0 +1,1 @@
+web: java -jar $JAVA_OPTS -Dserver.port=$PORT backend/target/kubescore-application-0.1.0.jar

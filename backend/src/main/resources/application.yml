@@ -1,0 +1,4 @@
+spring:
+  jersey:
+    #Let jersey listen on this path and not intercept static pages on /
+    applicationPath: "/api/v1/"
