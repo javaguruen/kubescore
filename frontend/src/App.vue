@@ -4,13 +4,19 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand href="/">NavBar</b-navbar-brand>
+      <b-navbar-brand to="/"><img alt="home" src="@/assets/kube.png" width="32px"/> Kubescore</b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse">
 
         <b-navbar-nav>
           <b-nav-item to="/about">About</b-nav-item>
           <b-nav-item href="#" disabled>Disabled</b-nav-item>
+          <b-nav-item-dropdown text="Scrambles">
+            <b-dropdown-item href="#">2x2</b-dropdown-item>
+            <b-dropdown-item to="/">3x3</b-dropdown-item>
+            <b-dropdown-item href="#">4x4</b-dropdown-item>
+            <b-dropdown-item href="#">5x5</b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->

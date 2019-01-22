@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>3x3 scrambles</h1>
+    <h1>3x3 scramblesxxx</h1>
     <div>
       <b-container fluid>
         <b-row align-h="center">
