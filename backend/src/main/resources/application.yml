@@ -2,3 +2,14 @@ spring:
   jersey:
     #Let jersey listen on this path and not intercept static pages on /
     applicationPath: "/api/v1/"
+
+  datasource:
+    url: jdbc:h2:mem:cube;MODE=PostgreSQL
+    username: root
+    password: ""
+    driverClassName: org.h2.Driver
+
+logging:
+  level:
+    root: INFO
+    org.flywaydb.core: INFO
