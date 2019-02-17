@@ -6,6 +6,7 @@ case class Kube(id: Option[Long], navn: String)
 
 case class Konkurranse(id: Option[Long], navn: String, sted: String, tidspunkt: OffsetDateTime, beskrivelse: Option[String])
 
+case class PersonForm(id: Option[Long], fornavn: String, etternavn: String, epost: String, passord: String, passordConfirm: String)
 case class Person(id: Option[Long], fornavn: String, etternavn: String, epost: String)
 
 case class Serie(id: Option[Long], person: Person, navn: String,

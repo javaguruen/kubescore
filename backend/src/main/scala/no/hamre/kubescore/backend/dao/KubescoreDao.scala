@@ -16,12 +16,36 @@ trait KubescoreDao {
   def addPerson(person: Person): Long
 
   def findPerson(id: Long): Option[Person]
+  def findPersonByEmail(email: String): Option[Person]
 }
 
 @Component
 class KubescoreDaoImpl(@Autowired dataSource: DataSource) extends KubescoreDao {
   private val sql2o = new Sql2o(dataSource, new PostgresQuirks())
 
+
+  override def findPersonByEmail(email: String): Option[Person] = {
+    val selectQuery = "SELECT * FROM personer WHERE lower(epost) = :epost"
+
+    val con = sql2o.beginTransaction
+    try {
+      val personer = con.createQuery(selectQuery)
+        .addParameter("epost", email.toLowerCase.trim)
+        .executeAndFetchTable().rows()
+        .asScala
+        .map(row => DbMapper.mapPerson(row))
+        .toList
+      personer match {
+        case Nil => None
+        case x :: Nil => Some(x)
+        case xs => throw DuplicateException(s"Found ${xs.size} persons with email $email")
+      }
+    } catch {
+      case e: Exception => throw DatabaseException(s"Error finding Person by id: $email", e)
+    } finally {
+      if (con != null) con.close()
+    }
+  }
 
   override def findPerson(id: Long): Option[Person] = {
     val selectQuery = "SELECT * FROM personer WHERE id = :id"
