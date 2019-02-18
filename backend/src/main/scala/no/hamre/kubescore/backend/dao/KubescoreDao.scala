@@ -1,19 +1,18 @@
 package no.hamre.kubescore.backend.dao
 
-import java.util.stream.Collectors
-
 import javax.sql.DataSource
-import no.hamre.kubescore.backend.model.{Person, Tid}
+import no.hamre.kubescore.backend.model.{Person, PersonForm, Tid}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.sql2o.Sql2o
 import org.sql2o.quirks.PostgresQuirks
+
 import scala.collection.JavaConverters._
 
 trait KubescoreDao {
   def addTime(time: Tid, personId: Long): Long
 
-  def addPerson(person: Person): Long
+  def addPerson(person: PersonForm, hashedPassword: String): Long
 
   def findPerson(id: Long): Option[Person]
   def findPersonByEmail(email: String): Option[Person]
@@ -70,7 +69,7 @@ class KubescoreDaoImpl(@Autowired dataSource: DataSource) extends KubescoreDao {
     }
   }
 
-  override def addPerson(person: Person): Long = {
+  override def addPerson(person: PersonForm, hashedPassword: String): Long = {
     val insertQuery =
       """
       INSERT INTO personer (fornavn, etternavn, epost)

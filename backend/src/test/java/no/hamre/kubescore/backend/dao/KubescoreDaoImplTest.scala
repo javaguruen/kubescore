@@ -1,6 +1,7 @@
 package no.hamre.kubescore.backend.dao
 
-import no.hamre.kubescore.backend.model.{Person, Tid}
+import no.hamre.kubescore.backend.auth.PasswordEncrypter
+import no.hamre.kubescore.backend.model.{Person, PersonForm, Tid}
 import org.scalatest.FunSuite
 
 class KubescoreDaoImplTest extends FunSuite with DaoTestdata{
@@ -15,7 +16,7 @@ class KubescoreDaoImplTest extends FunSuite with DaoTestdata{
 
   test("Insert new person should give an id > 0"){
     new DaoTestdata {
-      val id = dao.addPerson(person)
+      val id = dao.addPerson(personForm, PasswordEncrypter.hashPassword(personForm.passord))
       println(s"Generated ID is $id")
       assert(id > 0)
     }
@@ -33,7 +34,7 @@ class KubescoreDaoImplTest extends FunSuite with DaoTestdata{
 
   test("Finding a person after creation should work"){
     new DaoTestdata {
-      val id = dao.addPerson(person)
+      val id = dao.addPerson(personForm, PasswordEncrypter.hashPassword(personForm.passord))
       val maybePerson = dao.findPerson(id)
       assert(maybePerson.isDefined)
     }
@@ -52,6 +53,7 @@ class KubescoreDaoImplTest extends FunSuite with DaoTestdata{
 
 trait DaoTestdata{
   val person = Person(None, "New", "Person", "new.person@mail.com")
+  val personForm = PersonForm(None, "New", "Person", "new.person@mail.com", "topSecret", "topSecret")
   val datasource = H2FlywayDatasourceFactory.createDataSource("cubescore")
   val dao = new KubescoreDaoImpl(datasource)
 }

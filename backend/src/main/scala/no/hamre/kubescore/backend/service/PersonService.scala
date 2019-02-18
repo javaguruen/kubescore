@@ -1,6 +1,7 @@
 package no.hamre.kubescore.backend.service
 
 import no.hamre.kubescore.backend.Slf4jLogger
+import no.hamre.kubescore.backend.auth.PasswordEncrypter
 import no.hamre.kubescore.backend.dao.{DuplicateException, KubescoreDao}
 import no.hamre.kubescore.backend.model.PersonForm
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,6 +13,7 @@ trait PersonService{
 
 @Component
 class PersonServiceImpl(@Autowired kubescoreDao: KubescoreDao) extends PersonService with Slf4jLogger {
+  private val encryptor = PasswordEncrypter
 
   override def createNewPerson(personForm: PersonForm): Long = {
     val maybePersonExists = kubescoreDao.findPersonByEmail(personForm.epost)
@@ -19,6 +21,6 @@ class PersonServiceImpl(@Autowired kubescoreDao: KubescoreDao) extends PersonSer
       throw DuplicateException(s"Det finnes allerede en registrert person med epost ${personForm.epost}")
     }
 
-    kubescoreDao.addPerson(personForm, encryptedPassword)
+    kubescoreDao.addPerson(personForm, encryptor.hashPassword(personForm.passord))
   }
 }
