@@ -16,3 +16,5 @@ case class Konkurransegren(id: Option[Long], navn: String, kube: Kube, beskrivel
                            serier: List[Serie])
 
 case class Tid(id: Option[Long], minutter: Int, sekunder: Int, hundredeler: Int)
+
+case class AuthUser(username: String, password: String)

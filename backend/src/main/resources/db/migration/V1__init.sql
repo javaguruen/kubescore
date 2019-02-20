@@ -15,6 +15,7 @@ CREATE TABLE personer (
   fornavn character varying(64) NOT NULL,
   etternavn character varying(64) NOT NULL,
   epost character varying(128) NOT NULL,
+  passord character varying(128) NOT NULL,
   opprettet timestamp default CURRENT_TIMESTAMP NOT NULL,
   slettet timestamp
 );

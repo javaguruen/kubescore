@@ -1,7 +1,7 @@
 package no.hamre.kubescore.backend.dao
 
 import javax.sql.DataSource
-import no.hamre.kubescore.backend.model.{Person, PersonForm, Tid}
+import no.hamre.kubescore.backend.model.{AuthUser, Person, PersonForm, Tid}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.sql2o.Sql2o
@@ -16,6 +16,7 @@ trait KubescoreDao {
 
   def findPerson(id: Long): Option[Person]
   def findPersonByEmail(email: String): Option[Person]
+  def findAuthUserByEmail(email: String): Option[AuthUser]
 }
 
 @Component
@@ -33,6 +34,29 @@ class KubescoreDaoImpl(@Autowired dataSource: DataSource) extends KubescoreDao {
         .executeAndFetchTable().rows()
         .asScala
         .map(row => DbMapper.mapPerson(row))
+        .toList
+      personer match {
+        case Nil => None
+        case x :: Nil => Some(x)
+        case xs => throw DuplicateException(s"Found ${xs.size} persons with email $email")
+      }
+    } catch {
+      case e: Exception => throw DatabaseException(s"Error finding Person by id: $email", e)
+    } finally {
+      if (con != null) con.close()
+    }
+  }
+
+  override def findAuthUserByEmail(email: String): Option[AuthUser] = {
+    val selectQuery = "SELECT epost, passord FROM personer WHERE lower(epost) = :epost"
+
+    val con = sql2o.beginTransaction
+    try {
+      val personer = con.createQuery(selectQuery)
+        .addParameter("epost", email.toLowerCase.trim)
+        .executeAndFetchTable().rows()
+        .asScala
+        .map(row => DbMapper.mapAuthUser(row))
         .toList
       personer match {
         case Nil => None
@@ -72,14 +96,15 @@ class KubescoreDaoImpl(@Autowired dataSource: DataSource) extends KubescoreDao {
   override def addPerson(person: PersonForm, hashedPassword: String): Long = {
     val insertQuery =
       """
-      INSERT INTO personer (fornavn, etternavn, epost)
-      VALUES (:fnavn, :enavn, :epost)""".stripMargin
+      INSERT INTO personer (fornavn, etternavn, epost, passord)
+      VALUES (:fnavn, :enavn, :epost, :passord)""".stripMargin
     val con = sql2o.beginTransaction
     try {
       val generatedId: Long = con.createQuery(insertQuery, true)
         .addParameter("fnavn", person.fornavn)
         .addParameter("enavn", person.etternavn)
         .addParameter("epost", person.epost)
+        .addParameter("passord", hashedPassword)
         .executeUpdate().getKey().asInstanceOf[Long]
       con.commit
       generatedId

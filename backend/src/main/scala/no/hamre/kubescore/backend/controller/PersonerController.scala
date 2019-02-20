@@ -9,9 +9,9 @@ import no.hamre.kubescore.backend.Slf4jLogger
 import no.hamre.kubescore.backend.rest.api.{PersonForm, ToModelMapper}
 import no.hamre.kubescore.backend.service.PersonService
 import org.springframework.beans.factory.annotation.{Autowired, Value}
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Controller
 
-@Component
+@Controller
 @Path("/personer")
 class PersonerController(@Autowired personService: PersonService, @Value("baseUrl") baseUrl: String) extends Slf4jLogger{
 
