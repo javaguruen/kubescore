@@ -30,21 +30,32 @@ object Scrambler {
   
 */
 
+  def isMotsatt(sideOne: String, sideTwo: String): Boolean = {
+    (sideOne, sideTwo) match {
+      case ("", _) | (_, "") => false
+      case ("F", "B") | ("B", "F") => true
+      case ("U", "D") | ("D", "U") => true
+      case ("L", "R") | ("R", "L") => true
+      case _ => false
+    }
+  }
+
   def scramble3x3(requestedSize: Int): Array[String] = {
 
     @tailrec
-    def generate(sequence: List[String], previousMove: String): List[String] = {
+    def generate(sequence: List[String], previousMove: String, twoPrevioues: String): List[String] = {
       if( sequence.size >= requestedSize ) sequence
       else{
         val side = sides3x3(randomGenerator.nextInt(6))
         val rotation = directions3x3(randomGenerator.nextInt(3))
         side match {
-          case s if s == previousMove => generate(sequence, previousMove)
-          case _ => generate( (side+rotation) :: sequence, side)
+          case s if s == previousMove => generate(sequence, previousMove, twoPrevioues)
+          case s if s == twoPrevioues && isMotsatt(s, previousMove) => generate(sequence, previousMove, twoPrevioues)
+          case _ => generate( (side+rotation) :: sequence, side, previousMove)
         }
       }
     }
-    generate(List(), "").toArray
+    generate(List(), "", "").toArray
   }
 
 }
