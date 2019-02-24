@@ -6,29 +6,10 @@ import scala.util.Random
 object Scrambler {
   private val sides3x3 = Array("F", "B", "U", "D", "R", "L")
   private val directions3x3 = Array(" ", "' ", "2 ")
+  private val sidesPyraminx = Array("L", "R", "U", "B")
+  private val directionsPyraminx = Array(" ", "' ")
+
   private val randomGenerator: Random = scala.util.Random
-
-/*
-  const scramble = (moves) => {
-    let ms = ''
-    let count = 0
-    let lastMove = undefined
-    do{
-      const rand = random(6)
-      const rot = random(3)
-      const m = moves3x3[rand]
-      const r = times3x3[rot]
-      if( lastMove !== m ){
-        ms = ms + m + r
-        lastMove = m
-        count++
-      }
-    } while ( count < moves)
-    return ms
-  };
-
-  
-*/
 
   def isMotsatt(sideOne: String, sideTwo: String): Boolean = {
     (sideOne, sideTwo) match {
@@ -56,6 +37,31 @@ object Scrambler {
       }
     }
     generate(List(), "", "").toArray
+  }
+
+  private val PYRAMINX_MINIMIUM_TIPMOVES = 2
+
+  def scramblePyraminx(requestedSize: Int): Array[String] = {
+    val tipMoves = PYRAMINX_MINIMIUM_TIPMOVES + randomGenerator.nextInt(4 - PYRAMINX_MINIMIUM_TIPMOVES)
+    val sideMoves = requestedSize - tipMoves
+
+    @tailrec
+    def generate(sequence: List[String], previousMove: String, length: Int): List[String] = {
+      if( sequence.size >= length ) sequence
+      else{
+        val side = sidesPyraminx(randomGenerator.nextInt(4))
+        val rotation = directionsPyraminx(randomGenerator.nextInt(2))
+
+        side match {
+          case s if s == previousMove => generate(sequence, previousMove, length)
+          case _ => generate( (side+rotation) :: sequence, side, length)
+        }
+      }
+    }
+
+    val sides = generate(List(), "", sideMoves)
+    val tips = generate(List(), "", tipMoves).map{ s => s.toLowerCase()}
+    (sides ::: tips).toArray
   }
 
 }

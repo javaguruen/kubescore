@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import PyraminxScaramble from '@/components/PyraminxScaramble'
 
 Vue.use(Router)
 
@@ -12,6 +13,16 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/3x3',
+      name: 'home',
+      component: Home
+    },
+    {
+      path: '/pyraminx',
+      name: 'pyraminx',
+      component: PyraminxScaramble
     },
     {
       path: '/about',

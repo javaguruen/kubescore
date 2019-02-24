@@ -18,4 +18,12 @@ class ScrambleController {
     val seq = Scrambler.scramble3x3(rotations)
     Response.ok(seq.mkString(" ")).build()
   }
+
+  @GET
+  @Path("/pyraminx/")
+  def pyraminx(@QueryParam("rotations") @DefaultValue("12") rotations: Int): Response = {
+    log.info(s"Generating a pyraminx scramble with $rotations moves")
+    val seq = Scrambler.scramblePyraminx(rotations)
+    Response.ok(seq.mkString(" ")).build()
+  }
 }

@@ -10,4 +10,8 @@ class ScramblerTest extends FunSuite {
     assert( !Scrambler.isMotsatt("F", "U") )
     assert( !Scrambler.isMotsatt("F", "") )
   }
+
+  test("Pyraminx"){
+    println(Scrambler.scramblePyraminx(12).toList)
+  }
 }
